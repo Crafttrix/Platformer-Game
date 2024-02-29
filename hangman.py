@@ -1,13 +1,19 @@
 from tkinter import *
 import random
 
-words = ['pineapple','illness','jazz','headset','pain','beetle','hero','villain']   #placeholder wordlist, change into something more elegant later, what, idk
+import os
+
+#https://en.wikipedia.org/wiki/Camel_case
+
+#No use of classes (OOP)
+
+words = ['pineapple','illness','jazz','headset','pain','beetle','hero','villain']   #See https://github.com/dwyl/english-words, https://www.geeksforgeeks.org/pulling-a-random-word-or-string-from-a-line-in-a-text-file-in-python/
 correct_letters = set()
 lives = 11
 seperationstring = "----------------"
 
-def screen():
-    nav = int(input("1)Play\n2)Custom Words (not usable rn though)\n3)Exit\n"))
+def screen():    #Name for a class not a function e.g showScreen
+    nav = int(input("1)Play\n2)Custom Words (not usable rn though)\n3)Exit\n"))     #nav = navigation? why not write navigation or navigationChoice
     print(seperationstring)
     match nav:
         case 1:
@@ -15,7 +21,7 @@ def screen():
         case 2:
             screen()        #add content here later
         case 3:
-            exit()
+            exit(0)         #Good practice to provide a exit code (0 == all good)
 
 def game_loop():
     global lives
@@ -25,6 +31,9 @@ def game_loop():
     while lives > 0:
         guess = input("Guess a letter: ")
         print(seperationstring)
+
+        os.system("cls")                    #clear screen
+        
         matcher(guess, word)
         displayer(word)
         if wordset^correct_letters==set():  #this sucks, change it later
@@ -35,23 +44,23 @@ def game_loop():
     lives = 11  #this feels stupid
     screen()
 
-def displayer(word):
+def displayer(word):            #Maybe a name for a class but not a function, should be something like displayWord
     word_display(word)
     for i in range(0,lives):
         print('O', end = "")
     print(end="\n")
 
-def matcher(guess, word):
+def matcher(guess, word):       #Maybe a name for a class but not a function, should be something like matchWord
     global lives
     for i in word:
         if i == guess:
             print("Correct Guess!!")
             correct_letters.add(guess)
             lives += 1      #bodged
-            break
+            return                      #return instead of breaking
     lives -= 1
 
-def word_display(word):
+def word_display(word):         #Maybe a name for a class but not a function, should be something like displayWordGraphic?
     for w in word:
         if w in correct_letters:
             print(w, end = "")
@@ -60,12 +69,8 @@ def word_display(word):
     print("")
 
 
-screen()
-
-
-
-
-
+if __name__ == "__main__":  #https://realpython.com/if-name-main-python/
+    screen()                # Should have a recognizable name for a main function e.g hangman, main, entryPoint
 
 
 #gui coming soon, trust
